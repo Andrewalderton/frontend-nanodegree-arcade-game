@@ -71,19 +71,19 @@ Player.prototype.handleInput = function(keyCode) {
 Player.prototype.update = function() {
     // Detect when player reaches water with gem, update score and reset positions.
     if (this.y <= 10 && (gem.y === 600)) {
-        player.reset(202, 380);
-        player.scoreUpdate(20);
+        this.reset(202, 380);
+        this.scoreUpdate(20);
         gem.reset();
     }
     // Alternative scoreUpdate for reaching water without gem.
     else if(this.y <= 10) {
-        player.reset(202, 380);
-        player.scoreUpdate(10);
+        this.reset(202, 380);
+        this.scoreUpdate(10);
     }
 
-    player.checkCollisions();
+    this.checkCollisions();
     gem.collectGem();
-    player.drawText();
+    this.drawText();
 };
 
 // Render the player character on the screen.
@@ -99,18 +99,19 @@ Player.prototype.reset = function(x, y) {
 
 // Collision detection for enemy and player.
 Player.prototype.checkCollisions = function(){
+    var self = this; //alias "this"
     allEnemies.forEach(function(enemy) {
-        if((player.x <= enemy.x + enemy.width && player.x + player.width >= enemy.x) && (player.y <= enemy.y + enemy.height && player.height + player.y >= enemy.y)) {
+        if((self.x <= enemy.x + enemy.width && self.x + self.width >= enemy.x) && (self.y <= enemy.y + enemy.height && self.height + self.y >= enemy.y)) {
             // Reset player position and reduce score.
-            player.reset(202, 380);
-            player.scoreUpdate(-10);
+            self.reset(202, 380);
+            self.scoreUpdate(-10);
         }
     });
 };
 
 // Update the player's score.
 Player.prototype.scoreUpdate = function(scoreUpdate) {
-    player.score = player.score += scoreUpdate;
+    this.score = this.score += scoreUpdate;
 };
 
 // Display the current score onscreen.
@@ -118,16 +119,19 @@ Player.prototype.drawText = function() {
     ctx.clearRect(0, 0, 120, 20);
     ctx.font = '20px Helvetica';
     ctx.fillStyle = 'black';
-    ctx.fillText('Score: ' + player.score, 8, 18);
+    ctx.fillText('Score: ' + this.score, 8, 18);
 };
 
 
 /*** Gem Class ***/
 
 var Gem = function() {
-    this.reset(); // Set a random position and color.
+    this.gemX = [25, 126, 227, 328, 429]; // All possible gem positions stored in gemX and gemY.
+    this.gemY = [113, 196, 279];
+    this.gemColor = ['images/gem-blue.png', 'images/gem-green.png', 'images/gem-orange.png'];
     this.height = 40; // Height and width for collision.
     this.width = 76;
+    this.reset(); // Set a random position and color.
 };
 
 // Draw the gem on the screen.
@@ -137,20 +141,16 @@ Gem.prototype.render = function() {
 
 // Detect when player collects a gem.
 Gem.prototype.collectGem = function() {
-    if(player.x === gem.x - 25 && player.y === gem.y - 65) {
+    if(player.x === this.x - 25 && player.y === this.y - 65) {
         this.y = 600; // Move the gem offscreen
     }
 };
 
 // Reset gem with random position and color.
 Gem.prototype.reset = function() {
-    // All possible gem positions stored in gemX and gemY.
-    var gemX = [25, 126, 227, 328, 429];
-    var gemY = [113, 196, 279];
-    var gemColor = ['images/gem-blue.png', 'images/gem-green.png', 'images/gem-orange.png'];
-    this.sprite = gemColor[Math.floor(Math.random() * gemColor.length)];
-    this.x = gemX[Math.floor(Math.random() * gemX.length)];
-    this.y = gemY[Math.floor(Math.random() * gemY.length)];
+    this.sprite = this.gemColor[Math.floor(Math.random() * this.gemColor.length)];
+    this.x = this.gemX[Math.floor(Math.random() * this.gemX.length)];
+    this.y = this.gemY[Math.floor(Math.random() * this.gemY.length)];
 };
 
 
@@ -166,10 +166,9 @@ var allEnemies = [];
 var posY = [60, 143, 226]; // All possible Y locations for enemies.
 
 // Create enemies and push them into allEnemies array.
-posY.forEach(function(y){
-    posY = y;
+posY.forEach(function(posY){
     var x = Math.floor((Math.random() * 5 - 100));
-    var enemy = new Enemy(x, y);
+    var enemy = new Enemy(x, posY);
     allEnemies.push(enemy);
 });
 
