@@ -1,3 +1,5 @@
+'use strict';
+
 /*** Enemy Class ***/
 
 // Enemies our player must avoid
@@ -13,7 +15,7 @@ var Enemy = function(x, y, speed) {
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    if(this.x < 550) {
+    if (this.x < 550) {
         this.x += dt * this.speed;
     } else {
         // Reset enemy position and generate a new speed.
@@ -48,23 +50,27 @@ var Player = function(x, y) {
 
 Player.prototype.handleInput = function(keyCode) {
     // Switch statement to handle keyboard inputs and keep the player within game bounds.
-    switch(keyCode) {
-        case 'left' : if(this.x > 0) {
-            this.x -= 101; // 101 is the width of one tile as specified in engine.js.
-        }
-        break;
-        case 'right': if(this.x < 400) {
-            this.x += 101;
-        }
-        break;
-        case 'up': if (this.y > 0 ) {
-            this.y -= 83; // 83 is the height of one tile as specified in engine.js.
-        }
-        break;
-        case 'down': if(this.y < 380) {
-            this.y += 83;
-        }
-        break;
+    switch (keyCode) {
+        case 'left' :
+            if (this.x > 0) {
+                this.x -= 101; // 101 is the width of one tile as specified in engine.js.
+            }
+            break;
+        case 'right':
+            if (this.x < 400) {
+                this.x += 101;
+            }
+            break;
+        case 'up':
+            if (this.y > 0 ) {
+                this.y -= 83; // 83 is the height of one tile as specified in engine.js.
+            }
+            break;
+        case 'down':
+            if (this.y < 380) {
+                this.y += 83;
+            }
+            break;
     }
 };
 
@@ -76,7 +82,7 @@ Player.prototype.update = function() {
         gem.reset();
     }
     // Alternative scoreUpdate for reaching water without gem.
-    else if(this.y <= 10) {
+    else if (this.y <= 10) {
         this.reset(202, 380);
         this.scoreUpdate(10);
     }
@@ -99,14 +105,13 @@ Player.prototype.reset = function(x, y) {
 
 // Collision detection for enemy and player.
 Player.prototype.checkCollisions = function(){
-    var self = this; //alias "this"
     allEnemies.forEach(function(enemy) {
-        if((self.x <= enemy.x + enemy.width && self.x + self.width >= enemy.x) && (self.y <= enemy.y + enemy.height && self.height + self.y >= enemy.y)) {
+        if ((this.x <= enemy.x + enemy.width && this.x + this.width >= enemy.x) && (this.y <= enemy.y + enemy.height && this.height + this.y >= enemy.y)) {
             // Reset player position and reduce score.
-            self.reset(202, 380);
-            self.scoreUpdate(-10);
+            this.reset(202, 380);
+            this.scoreUpdate(-10);
         }
-    });
+    }.bind(this));
 };
 
 // Update the player's score.
