@@ -1,11 +1,11 @@
 Classic Arcade Game
 ===================
 
-##Description
+## Description
 
 An arcade game based on the classic 'Frogger'. This is the 3rd project created for the Udacity Front-End Nanodegree course.
 
-##How to Play
+## How to Play
 
 * The object of the game is to move the character from its starting place, across the path of oncoming bugs to the safety of the water on the opposite side.
 
@@ -15,7 +15,7 @@ An arcade game based on the classic 'Frogger'. This is the 3rd project created f
 
 * Being hit by a bug reduces your score by **10** points and returns the character to its starting position.
 
-###Movement
+### Movement
 
 Move the character using the arrow keys on your keyboard.
 
