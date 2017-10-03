@@ -19,7 +19,7 @@ An arcade game based on the classic 'Frogger'. This is the 3rd project created f
 
 Move the character using the arrow keys on your keyboard.
 
-##How To Run The Game
+## How To Run The Game
 
 This game is designed to run in the browser. Simply copy or clone the repository and open up `index.html` in your preferred browser to play.
 
